@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     kotlin("kapt")
+    alias(libs.plugins.google.gms.google.services)
+
 }
 
 android {
@@ -64,6 +66,17 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation (libs.google.core)
     implementation (libs.zxing.android.embedded)
+    implementation (libs.kotlinx.coroutines.core)
+    implementation (libs.kotlinx.coroutines.android)
+    implementation (libs.firebase.database.ktx)
+    implementation(libs.firebase.database)
+    implementation(libs.google.firebase.firestore.ktx)
+    implementation(platform(libs.firebase.bom.v3273))
+    implementation(libs.play.services.auth)
+    implementation (platform(libs.firebase.bom.v3102))
+    implementation (libs.google.firebase.database.ktx)
+
+
 
 
 

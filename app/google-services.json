@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "933552852064",
+    "project_id": "erninventario",
+    "storage_bucket": "erninventario.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:933552852064:android:76072a90f3fafd7c894705",
+        "android_client_info": {
+          "package_name": "com.eriknivar.erninventario"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMhNx2T25yUYMTzCDdvKzOaIO425YJE80"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

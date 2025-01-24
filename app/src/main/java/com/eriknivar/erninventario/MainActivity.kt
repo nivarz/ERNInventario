@@ -1,48 +1,46 @@
 package com.eriknivar.erninventario
 
-import android.app.Activity
-import android.content.Intent
+import android.Manifest
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.runtime.mutableStateOf
-import com.eriknivar.erninventario.inventoryapp.view.inventoryentry.ReadQRCode
-import com.google.zxing.integration.android.IntentIntegrator
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.compose.rememberNavController
 
 class MainActivity : ComponentActivity() {
-
-    private val qrCodeContent = mutableStateOf("")
-
-    private lateinit var qrScanLauncher: ActivityResultLauncher<Intent>
+    private val requestCameraPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+            if (isGranted) {
+                // Permiso concedido, puedes realizar la acción necesaria
+            } else {
+                // Permiso denegado, maneja el caso apropiadamente
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
-        qrScanLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            val data = result.data
-            val intentResult = IntentIntegrator.parseActivityResult(result.resultCode, data)
-            if (intentResult.contents != null) {
-                qrCodeContent.value = intentResult.contents
-            }
-        }
-
         setContent {
-            ReadQRCode({ startQRCodeScanner(this) }, qrCodeContent)
+            MyApp(requestCameraPermissionLauncher)
         }
     }
+}
 
-    private fun startQRCodeScanner(activity: Activity) {
-        val integrator = IntentIntegrator(activity)
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
-        integrator.setPrompt("Scan a QR code")
-        integrator.setCameraId(0)
-        integrator.setBeepEnabled(true)
-        integrator.setBarcodeImageEnabled(true)
-        val scanIntent = integrator.createScanIntent()
-        qrScanLauncher.launch(scanIntent)
+@Composable
+fun MyApp(requestCameraPermissionLauncher: ActivityResultLauncher<String>) {
+    val navController = rememberNavController()
+    LocalContext.current
+
+    LaunchedEffect(Unit) {
+        // Aquí puedes realizar las operaciones de inicialización asíncronas
+        requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA)
     }
+
+    // Configura tu NavHostController y otras configuraciones iniciales de tu aplicación
+    NavGraph(navController)
 }

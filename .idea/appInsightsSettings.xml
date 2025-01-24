@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.eriknivar.erninventario" />
+                  <option name="mobileSdkAppId" value="1:933552852064:android:76072a90f3fafd7c894705" />
+                  <option name="projectId" value="erninventario" />
+                  <option name="projectNumber" value="933552852064" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

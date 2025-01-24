@@ -1,6 +1,7 @@
 package com.eriknivar.erninventario
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -13,7 +14,7 @@ import com.eriknivar.erninventario.inventoryapp.view.storagetype.SelectStorage
 
 
 @Composable
-fun NavHostController() {
+fun NavGraph(navController: NavHostController) {
 
     val navController = rememberNavController()
 
