@@ -1,47 +1,48 @@
 package com.eriknivar.erninventario
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.eriknivar.erninventario.ui.theme.ERNInventarioTheme
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.mutableStateOf
+import com.eriknivar.erninventario.inventoryapp.view.inventoryentry.ReadQRCode
+import com.google.zxing.integration.android.IntentIntegrator
 
 class MainActivity : ComponentActivity() {
+
+    private val qrCodeContent = mutableStateOf("")
+
+    private lateinit var qrScanLauncher: ActivityResultLauncher<Intent>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContent {
-            ERNInventarioTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+
+        qrScanLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            val data = result.data
+            val intentResult = IntentIntegrator.parseActivityResult(result.resultCode, data)
+            if (intentResult.contents != null) {
+                qrCodeContent.value = intentResult.contents
             }
         }
+
+        setContent {
+            ReadQRCode({ startQRCodeScanner(this) }, qrCodeContent)
+        }
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    ERNInventarioTheme {
-        Greeting("Android")
+    private fun startQRCodeScanner(activity: Activity) {
+        val integrator = IntentIntegrator(activity)
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
+        integrator.setPrompt("Scan a QR code")
+        integrator.setCameraId(0)
+        integrator.setBeepEnabled(true)
+        integrator.setBarcodeImageEnabled(true)
+        val scanIntent = integrator.createScanIntent()
+        qrScanLauncher.launch(scanIntent)
     }
 }
